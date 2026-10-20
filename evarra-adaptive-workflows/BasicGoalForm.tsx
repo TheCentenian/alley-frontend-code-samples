@@ -1,6 +1,6 @@
 /**
  * Excerpt from src/components/features/goals/forms/BasicGoalForm.tsx.
- * Wizard rendering and the action area. Not imported by the app.
+ * Wizard rendering and the action area.
  */
 
   const {
