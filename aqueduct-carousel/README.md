@@ -8,8 +8,7 @@ Summary:
 Why I Built It This Way:
 - I wanted the layout and the interaction logic to stay separate.
 - CSS is responsible for where the controls appear and how the layout changes across screen sizes. JavaScript only handles the behavior that CSS cannot, such as calculating scroll distance and determining whether additional content is available in either direction.
-
-This keeps the component easier to understand and maintain while avoiding unnecessary screen-size logic in JavaScript.
+- This keeps the component easier to understand and maintain while avoiding unnecessary screen-size logic in JavaScript.
 
 Why I Selected This Sample:
 - I selected this sample because it shows how I approach frontend behavior at the browser level rather than relying entirely on a framework or third-party component.
