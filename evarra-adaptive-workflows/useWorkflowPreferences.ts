@@ -11,6 +11,11 @@ import type { AppAdvancedFeatures } from '@/lib/server/types';
 
 type WorkflowDefaultKey = keyof AppAdvancedFeatures;
 
+/**
+ * Returns the five workflow booleans and the functions that change them.
+ * Guest values are read from local state. Signed-in values are read from
+ * account settings and saved with updateUserSettingsAction.
+ */
 export function useWorkflowPreferences() {
   const user = useAuthStore(state => state.user);
   const guestPreferences = usePrivacySettings();
@@ -18,6 +23,7 @@ export function useWorkflowPreferences() {
 
   const persistWorkflowDefault = useCallback(
     async (key: WorkflowDefaultKey, value: boolean) => {
+      // Guest: call the local setter for this key and return. The server is not called.
       if (isGuestUser(user)) {
         const guestSetters: Record<WorkflowDefaultKey, (value: boolean) => void> = {
           advanced_goal_panel: guestPreferences.setUseGoalDetailsPanel,
@@ -30,6 +36,8 @@ export function useWorkflowPreferences() {
         return;
       }
 
+      // Signed-in: update local state, then save this one key.
+      // If the request throws, set the value back to its opposite and show an error.
       updateWorkflowDefault(key, value);
       try {
         await updateUserSettingsAction({
@@ -43,6 +51,7 @@ export function useWorkflowPreferences() {
     [guestPreferences, updateWorkflowDefault, user]
   );
 
+  // Sets every workflow switch to the same boolean.
   const persistAllWorkflowDefaults = useCallback(
     async (value: boolean) => {
       if (isGuestUser(user)) {
@@ -50,6 +59,8 @@ export function useWorkflowPreferences() {
         return;
       }
 
+      // Update local state, then save all five keys together.
+      // A failed request shows an error and leaves the local values in place.
       setAllWorkflowDefaults(value);
       try {
         await updateUserSettingsAction({
@@ -68,6 +79,7 @@ export function useWorkflowPreferences() {
     [guestPreferences, setAllWorkflowDefaults, user]
   );
 
+  // Guest: return the local booleans and the local setters.
   if (isGuestUser(user)) {
     return {
       useGoalDetailsPanel: guestPreferences.useGoalDetailsPanel,
@@ -86,6 +98,8 @@ export function useWorkflowPreferences() {
 
   const workflowDefaults = settings.advanced_features;
 
+  // Signed-in: read each boolean from account settings.
+  // Each setter saves that one key through persistWorkflowDefault.
   return {
     useGoalDetailsPanel: workflowDefaults.advanced_goal_panel,
     useFullGoalCreation: workflowDefaults.advanced_goal_creation,
