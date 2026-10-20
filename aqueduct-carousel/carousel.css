@@ -1,0 +1,92 @@
+/*
+ * Layout for ModuleSpotlightCarousel.
+ * The component does not branch on screen width. This file decides where the controls sit.
+ * Phone: one column, arrows in a second row.
+ * From 640px: [previous] [track] [next].
+ */
+
+.aq-module-carousel {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .aq-module-carousel {
+    /* minmax(0, 1fr) lets the track shrink so the row scrolls instead of widening the page. */
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+}
+
+.aq-module-carousel-track {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  /* scrollGapPx() reads this. The 12px fallback in that function matches this value. */
+  gap: 12px;
+  overflow-x: auto;
+  /* A horizontal swipe stays in the row and does not drag the page behind it. */
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.aq-module-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* The track sets outline: none inline so mouse clicks do not show a ring. Keyboard focus still does. */
+.aq-module-carousel-track:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.65);
+  outline-offset: 3px;
+}
+
+@media (min-width: 640px) {
+  .aq-module-carousel-track {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+/* Side arrows are in the DOM on every width. Only the wide layout shows them. */
+.aq-module-carousel-prev,
+.aq-module-carousel-next {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .aq-module-carousel-prev {
+    display: inline-flex;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .aq-module-carousel-next {
+    display: inline-flex;
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+/* Phone pair, centered under the track. */
+.aq-module-carousel-mobile-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  grid-column: 1;
+  grid-row: 2;
+}
+
+@media (min-width: 640px) {
+  .aq-module-carousel-mobile-nav {
+    display: none;
+  }
+}
