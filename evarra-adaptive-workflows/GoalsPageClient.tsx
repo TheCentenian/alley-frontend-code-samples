@@ -1,6 +1,6 @@
 /**
  * Excerpt from src/components/features/goals/GoalsPageClient.tsx.
- * The Quick / Full creation flow. Not imported by the app.
+ * The Quick / Full creation flow.
  */
 
   const { useFullGoalCreation, setUseFullGoalCreation } = useSettings();
