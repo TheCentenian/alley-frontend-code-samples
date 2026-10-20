@@ -1,6 +1,6 @@
 /**
  * Excerpt from src/components/features/goals/forms/hooks/useStepNavigation.ts.
- * Step list and the functions that move between steps. Not imported by the app.
+ * Step list and the functions that move between steps.
  */
 import { useState, useCallback } from 'react';
 import { findExistingGoalByName } from '@/lib/domains/goals/utils/clientGoalActions';
